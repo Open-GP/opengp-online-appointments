@@ -11,7 +11,7 @@ function App() {
               <Route path={"/doctor"}>
                   <DoctorsView/>
               </Route>
-              <Route path={"/patient"}>
+              <Route path={"/patient/:roomName"}>
                   <PatientView/>
               </Route>
           </Switch>
