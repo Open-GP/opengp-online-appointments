@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import Api from "../../api/api";
 
 const ChoosePatient = ({onChoice}) => {
 
@@ -13,11 +14,12 @@ const ChoosePatient = ({onChoice}) => {
         onChoice(selectedChoice);
     };
 
+    const patients = new Api().getPatients();
+
     return <div>Select a patient and start a video call
         <div className={"select"}>
             <select onChange={onPatientChange} value={selectedChoice}>
-                <option value={"1"}>Test Testerson</option>
-                <option value={"2"}>Someone else</option>
+                {patients.map(patient => <option value={patient.id}>{patient.name}</option>)}
             </select>
         </div>
         <button className={"button is-link"} onClick={onClick}>Create video session</button>
