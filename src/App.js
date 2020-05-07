@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+import './App.scss';
 import DoctorsView from "./components/DoctorsView/doctorsView";
 import PatientView from "./components/PatientView/patientView";
 import {Route, BrowserRouter, Switch} from "react-router-dom";

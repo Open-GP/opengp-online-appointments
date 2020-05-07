@@ -14,11 +14,13 @@ const ChoosePatient = ({onChoice}) => {
     };
 
     return <div>Select a patient and start a video call
-        <select onChange={onPatientChange} value={selectedChoice}>
-            <option value={"1"}>Test Testerson</option>
-            <option value={"2"}>Someone else</option>
-        </select>
-        <button onClick={onClick}>Create video session</button>
+        <div className={"select"}>
+            <select onChange={onPatientChange} value={selectedChoice}>
+                <option value={"1"}>Test Testerson</option>
+                <option value={"2"}>Someone else</option>
+            </select>
+        </div>
+        <button className={"button is-link"} onClick={onClick}>Create video session</button>
     </div>
 };
 
