@@ -6,7 +6,7 @@ const PatientRoomName = () => {
     return <div>
         <div className={"label"}>Enter room name you received from the doctor</div>
         <input className="input" type="text" placeholder="Enter room name" value={roomName}
-               onChange={({target: {value: value}}) => setRoomName(value)}/>
+               onChange={({target: {value}}) => setRoomName(value)}/>
         <Link to={`/patient/${roomName}`}>
             <button className={"button"}>Connect</button>
         </Link>
