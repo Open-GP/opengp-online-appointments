@@ -4,7 +4,7 @@ import {Jutsu} from "react-jutsu";
 
 const PatientView = () => {
     const {roomName} = useParams();
-    return <Jutsu roomName={roomName}/>
+    return <Jutsu roomName={`opengp-appointments-${roomName}`}/>
 };
 
 export default PatientView;

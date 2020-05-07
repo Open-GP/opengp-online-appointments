@@ -5,26 +5,22 @@ import randomString from "random-string"
 
 const DoctorsView = () => {
     const [started, setStarted] = useState(false);
-    const [selectedPatientId, setSelectedPatientId] = useState();
-    const videoStream = ({roomName}) => <div> Share link with patient: {generateLink()} <Jutsu roomName={roomName}/></div>;
+    const videoStream = ({roomName}) => <div> Share link with patient: {patientLink} <Jutsu roomName={roomName}/></div>;
 
-    const generateRoomDetails = () => {
-      return {
-          roomName: `opengp-${randomString(12)}`
-      }
+    const appointmentDetails = {
+          id: randomString(12)
     };
 
-    const generateLink = () => {
-        return `http://${window.location.hostname}/patient/${generateRoomDetails().roomName}`
-    };
+    const patientLink = `http://${window.location.hostname}/patient/${appointmentDetails.id}`;
 
-    const onPatientChoice = (patientId) => {
+    const onPatientChoice = () => {
         setStarted(true);
-        setSelectedPatientId(patientId);
     };
 
     if (started) {
-        const roomDetails = generateRoomDetails();
+        const roomDetails = {
+            roomName: `opengp-appointments-${appointmentDetails.id}`
+        };
         return videoStream(roomDetails);
     } else {
         return <ChoosePatient onChoice={onPatientChoice}/>;
