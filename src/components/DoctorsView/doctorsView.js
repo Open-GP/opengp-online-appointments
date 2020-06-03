@@ -20,7 +20,7 @@ const DoctorsView = () => {
           id: randomString(12)
     };
 
-    const patientLink = `http://${window.location.hostname}/patient/${appointmentDetails.id}`;
+    const patientLink = `https://${window.location.hostname}/patient/${appointmentDetails.id}`;
 
     const onPatientChoice = (id) => {
         setStarted(true);
