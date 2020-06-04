@@ -2,22 +2,26 @@ import React, {useState} from "react";
 import {Jutsu} from "react-jutsu";
 import ChoosePatient from "./choosePatient";
 import randomString from "random-string"
-import { Patient, fhirVersions } from 'fhir-react';
+import {fhirVersions, Patient} from 'fhir-react';
 import Api from "../../api/api";
+import "./DoctorsView.css"
 
 const DoctorsView = () => {
     const [selectedPatientId, setSelectedPatientId] = useState();
     const [started, setStarted] = useState(false);
     const videoStream = ({roomName}) => {
         const fhirResource = new Api().getPatient(selectedPatientId);
-        return <div> Share link with patient: {patientLink}
-        <Jutsu roomName={roomName}/>
-        <Patient fhirResource={fhirResource} fhirVersion={fhirVersions.STU3} />
+        return <div className="doctors-view">
+            <div className="sharing-link"> Link for the patient: <strong>{patientLink}</strong> or share code: <strong>{appointmentDetails.id}</strong> </div>
+            <div className="video-container">
+                <Jutsu roomName={roomName}/>
+                <Patient fhirResource={fhirResource} fhirVersion={fhirVersions.STU3}/>
+            </div>
         </div>;
     };
 
     const appointmentDetails = {
-          id: randomString(12)
+        id: randomString(12)
     };
 
     const patientLink = `https://${window.location.hostname}/patient/${appointmentDetails.id}`;

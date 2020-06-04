@@ -17,12 +17,14 @@ const ChoosePatient = ({onChoice}) => {
     const patients = new Api().getPatients();
 
     return <div>Select a patient and start a video call
-        <div className={"select"}>
-            <select onChange={onPatientChange} value={selectedChoice}>
-                {patients.map(patient => <option value={patient.id}>{patient.name}</option>)}
-            </select>
+        <div className="patient-selection">
+            <div className={"select"}>
+                <select onChange={onPatientChange} value={selectedChoice}>
+                    {patients.map(patient => <option value={patient.id}>{patient.name}</option>)}
+                </select>
+            </div>
+            <button className={"button is-link"} onClick={onClick}>Create video session</button>
         </div>
-        <button className={"button is-link"} onClick={onClick}>Create video session</button>
     </div>
 };
 
