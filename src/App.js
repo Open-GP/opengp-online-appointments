@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.scss';
-import DoctorsView from "./components/DoctorsView/doctorsView";
-import PatientView from "./components/PatientView/patientView";
+import DoctorView from "./components/DoctorsView/DoctorView";
+import PatientView from "./components/PatientView/PatientsView";
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import Home from "./components/Home/home";
 
@@ -13,7 +13,7 @@ function App() {
                   <Home/>
               </Route>
               <Route exact path={"/doctor"}>
-                  <DoctorsView/>
+                  <DoctorView/>
               </Route>
               <Route exact path={"/patient/:roomName"}>
                   <PatientView/>

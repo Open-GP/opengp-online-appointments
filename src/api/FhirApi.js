@@ -1,11 +1,11 @@
 import GPConnectDemonstratorApi from "./GPConnectDemonstratorApi";
 
-const Api = {
+const FhirApi = {
 
     defaultNhsNos: ["9658218865", "9658218873", "9658218989"],
 
     getPatientSummaries: async () => {
-        const responses = await Promise.all(Api.defaultNhsNos.map(nhsNo => GPConnectDemonstratorApi.getPatient(nhsNo)));
+        const responses = await Promise.all(FhirApi.defaultNhsNos.map(nhsNo => GPConnectDemonstratorApi.getPatient(nhsNo)));
 
         return responses
             .filter(response => !!response)
@@ -23,4 +23,4 @@ class PatientSummary {
     }
 }
 
-export default Api;
+export default FhirApi;

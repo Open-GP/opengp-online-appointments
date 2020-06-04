@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
-import Api from "../../api/api";
+import FhirApi from "../../api/FhirApi";
 
-const ChoosePatient = ({onChoice}) => {
+const PatientChoice = ({onChoice}) => {
 
     const [selectedChoice, setSelectedChoice] = useState();
     const [patients, setPatients] = useState([]);
@@ -11,7 +11,7 @@ const ChoosePatient = ({onChoice}) => {
     const onClick = () => onChoice(selectedChoice);
 
     useEffect(() => {
-       Api.getPatientSummaries().then(patients => {
+       FhirApi.getPatientSummaries().then(patients => {
            setPatients(patients);
            setSelectedChoice(patients.length > 0 ? patients[0].nhsNo : undefined);
        });
@@ -30,4 +30,4 @@ const ChoosePatient = ({onChoice}) => {
     </div>
 };
 
-export default ChoosePatient;
+export default PatientChoice;
