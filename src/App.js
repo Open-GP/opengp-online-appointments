@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.scss';
 import DoctorView from "./components/DoctorsView/DoctorView";
-import PatientView from "./components/PatientView/PatientsView";
+import PatientView from "./components/PatientView/PatientView";
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import Home from "./components/Home/home";
 
