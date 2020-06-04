@@ -1,29 +1,31 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Api from "../../api/api";
 
 const ChoosePatient = ({onChoice}) => {
 
-    const [selectedChoice, setSelectedChoice] = useState("1");
+    const [selectedChoice, setSelectedChoice] = useState();
+    const [patients, setPatients] = useState([]);
 
-    const onPatientChange = (event) => {
-        console.log(event.target.value);
-        setSelectedChoice(event.target.value);
-    };
+    const onPatientChange = event => setSelectedChoice(event.target.value);
 
-    const onClick = () => {
-        onChoice(selectedChoice);
-    };
+    const onClick = () => onChoice(selectedChoice);
 
-    const patients = new Api().getPatients();
+    useEffect(() => {
+       Api.getPatientSummaries().then(patients => {
+           setPatients(patients);
+           setSelectedChoice(patients.length > 0 ? patients[0].nhsNo : undefined);
+       });
+    }, []);
 
     return <div>Select a patient and start a video call
         <div className="patient-selection">
             <div className={"select"}>
                 <select onChange={onPatientChange} value={selectedChoice}>
-                    {patients.map(patient => <option value={patient.id}>{patient.name}</option>)}
+                    {!selectedChoice && <option>Loading patients...</option>}
+                    {patients.map(patient => <option value={patient.nhsNo} key={patient.nhsNo}>{patient.name}</option>)}
                 </select>
             </div>
-            <button className={"button is-link"} onClick={onClick}>Create video session</button>
+            <button className={"button is-link"} onClick={onClick} disabled={!selectedChoice}>Create video session</button>
         </div>
     </div>
 };

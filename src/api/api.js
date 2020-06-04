@@ -1,32 +1,25 @@
-import firstPatient from "../data/patients/1.json"
-import secondPatient from "../data/patients/2.json"
+import GPConnectDemonstratorApi from "./GPConnectDemonstratorApi";
 
-class Api {
+const Api = {
 
-    constructor() {
-        this.patientsJson = {
-            "1": firstPatient,
-            "2": secondPatient
-        }
-    }
+    defaultNhsNos: ["9658218865", "9658218873", "9658218989"],
 
-    getPatients() {
-        return [
-            new Patient("1", "Garth WRIGHT"),
-            new Patient("2", "Mike MEAKIN")
-        ]
-    }
+    getPatientSummaries: async () => {
+        const responses = await Promise.all(Api.defaultNhsNos.map(nhsNo => GPConnectDemonstratorApi.getPatient(nhsNo)));
 
-    getPatient(id) {
-        return this.patientsJson[id]
-    }
-}
+        return responses
+            .filter(response => !!response)
+            .map(fhirPatient => new PatientSummary(fhirPatient))
+    },
 
-class Patient {
+    getFhirPatient: nhsNo =>  GPConnectDemonstratorApi.getPatient(nhsNo)
+};
 
-    constructor(id, name) {
-        this.id = id;
-        this.name = name;
+class PatientSummary {
+
+    constructor(fhirPatient) {
+        this.nhsNo = fhirPatient.identifier[0].value;
+        this.name = fhirPatient.name[0].text;
     }
 }
 
