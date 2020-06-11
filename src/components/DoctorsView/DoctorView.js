@@ -7,17 +7,17 @@ import FhirApi from "../../api/FhirApi";
 import "./DoctorView.css"
 
 const DoctorView = () => {
-    const [fhirResource, setFhirResource] = useState();
+    const [patientInformation, setPatientInformation] = useState();
 
     const appointmentDetails = {
         id: randomString(12)
     };
 
-    const onPatientChoice = nhsNo => FhirApi.getFhirPatient(nhsNo).then(setFhirResource);
+    const onPatientChoice = nhsNo => FhirApi.getPatientInformation(nhsNo).then(setPatientInformation);
 
-    if (fhirResource) {
+    if (patientInformation) {
         return <VideoStream roomName={`opengp-appointments-${appointmentDetails.id}`}
-                            fhirResource={fhirResource}
+                            patientInformation={patientInformation}
                             appointmentId={appointmentDetails.id}/>;
     } else {
         return <PatientChoice onChoice={onPatientChoice}/>;

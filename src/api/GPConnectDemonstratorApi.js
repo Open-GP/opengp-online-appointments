@@ -171,7 +171,7 @@ const retrieveStructuredRecord = (demoServerBaseUrl, nhsNo) => {
           "Content-Type": "application/fhir+json"
       }
   }).then(response => {
-      return response.data.entry[0].resource
+      return response.data
   }).catch(error => {
       console.log("error retrieving structured record", error)
   });

@@ -1,15 +1,20 @@
 import React from "react";
-import {fhirVersions, Patient} from "fhir-react";
+import {fhirVersions, Patient, MedicationStatement} from "fhir-react";
 import {Jutsu} from "react-jutsu";
+import 'fhir-react/build/style.css';
+import 'fhir-react/build/bootstrap-reboot.min.css';
 
-const VideoStream = ({roomName, fhirResource, appointmentId}) => {
+const VideoStream = ({roomName, patientInformation, appointmentId}) => {
     const patientLink = `https://${window.location.hostname}/patient/${appointmentId}`;
+
+    const {fhirPatient, fhirMedicationStatement} = patientInformation;
 
     return <div className="doctors-view">
         <div className="sharing-link"> Link for the patient: <strong>{patientLink}</strong> or share code: <strong>{appointmentId}</strong> </div>
         <div className="video-container">
             <Jutsu roomName={roomName}/>
-            <Patient fhirResource={fhirResource} fhirVersion={fhirVersions.STU3}/>
+            <Patient fhirResource={fhirPatient} fhirVersion={fhirVersions.STU3}/>
+            <MedicationStatement fhirResource={fhirMedicationStatement} fhirVersion={fhirVersions.STU3}/>
         </div>
     </div>;
 };
