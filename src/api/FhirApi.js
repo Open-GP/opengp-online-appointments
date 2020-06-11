@@ -12,7 +12,7 @@ const FhirApi = {
             .map(fhirPatient => new PatientSummary(fhirPatient))
     },
 
-    getFhirPatient: nhsNo =>  GPConnectDemonstratorApi.getPatient(nhsNo)
+    getFhirPatient: nhsNo =>  GPConnectDemonstratorApi.getStructuredRecord(nhsNo)
 };
 
 class PatientSummary {

@@ -93,21 +93,26 @@ const generateJwtToken = (baseUrl) => {
     return encodedHeader + "." + encodedPayload + ".";
 };
 
-const retrievePatient = (demoServerBaseUrl, nhsNo) => {
-    const jwtString = generateJwtToken(demoServerBaseUrl);
+const jwtString = generateJwtToken(demoServerBaseUrl);
 
+const authHeaders = (interaction) => {
+   return {
+       Authorization: `Bearer ${jwtString}`,
+       Accept: "application/fhir+json",
+       "Ssp-From": "200000000359",
+       "Ssp-To": "918999198993",
+       "Ssp-TraceID": uuid(),
+       "Ssp-InteractionID": interaction,
+   }
+};
+
+
+const retrievePatient = (demoServerBaseUrl, nhsNo) => {
     const config = {
         params: {
             identifier: `https://fhir.nhs.uk/Id/nhs-number|${nhsNo}`
         },
-        headers: {
-            Authorization: `Bearer ${jwtString}`,
-            Accept: "application/fhir+json",
-            "Ssp-From": "200000000359",
-            "Ssp-To": "918999198993",
-            "Ssp-TraceID": uuid(),
-            "Ssp-InteractionID": "urn:nhs:names:services:gpconnect:fhir:rest:search:patient-1",
-        }
+        headers: authHeaders("urn:nhs:names:services:gpconnect:fhir:rest:search:patient-1")
     };
 
 
@@ -121,8 +126,61 @@ const retrievePatient = (demoServerBaseUrl, nhsNo) => {
         });
 };
 
+const retrieveStructuredRecord = (demoServerBaseUrl, nhsNo) => {
+  const body = {
+      resourceType: "Parameters",
+      parameter: [
+          {
+              name: "patientNHSNumber",
+              valueIdentifier: {
+                  system: "https://fhir.nhs.uk/Id/nhs-number",
+                  value: nhsNo
+              }
+          },
+          {
+              name: "includeAllergies",
+              part: [
+                  {
+                      name: "includeResolvedAllergies",
+                      valueBoolean: true
+                  }
+              ]
+          },
+          {
+              name: "includeMedication",
+              part: [
+                  {
+                      name: "includePrescriptionIssues",
+                      valueBoolean: true
+                  },
+                  {
+                      name: "medicationSearchFromDate",
+                      valueDate: "2015-01-01"
+                  }
+              ]
+          }
+      ]
+  };
+
+  return axios({
+      method: 'POST',
+      url: `${demoServerBaseUrl}/Patient/$gpc.getstructuredrecord`,
+      data: body,
+      headers: {
+          ...authHeaders("urn:nhs:names:services:gpconnect:fhir:operation:gpc.getstructuredrecord-1"),
+          "Content-Type": "application/fhir+json"
+      }
+  }).then(response => {
+      return response.data.entry[0].resource
+  }).catch(error => {
+      console.log("error retrieving structured record", error)
+  });
+
+};
+
 const GPConnectDemonstratorApi = {
-    getPatient: (nhsNo) => retrievePatient(demoServerBaseUrl, nhsNo)
+    getPatient: (nhsNo) => retrievePatient(demoServerBaseUrl, nhsNo),
+    getStructuredRecord: (nhsNo) => retrieveStructuredRecord(demoServerBaseUrl, nhsNo)
 };
 
 export default GPConnectDemonstratorApi;
