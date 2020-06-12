@@ -10,9 +10,11 @@ const VideoStream = ({roomName, patientInformation, appointmentId}) => {
     const {fhirPatient, fhirMedicationStatement} = patientInformation;
 
     return <div className="doctors-view">
-        <div className="sharing-link"> Link for the patient: <strong>{patientLink}</strong> or share code: <strong>{appointmentId}</strong> </div>
         <div className="video-container">
             <Jutsu roomName={roomName}/>
+            <div className="sharing-link"> Link for the patient: <strong>{patientLink}</strong> or share code: <strong>{appointmentId}</strong> </div>
+        </div>
+        <div className="patient-data-container">
             <Patient fhirResource={fhirPatient} fhirVersion={fhirVersions.STU3}/>
             <MedicationStatement fhirResource={fhirMedicationStatement} fhirVersion={fhirVersions.STU3}/>
         </div>
