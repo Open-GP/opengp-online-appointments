@@ -1,5 +1,14 @@
 import GPConnectDemonstratorApi from "./GPConnectDemonstratorApi";
 
+const getFirst = (structuredRecord, resourceType) => {
+    const matchingResources = structuredRecord.entry.filter(resource => resource.resource.resourceType === resourceType);
+    if (matchingResources.length  > 0 ) {
+        return matchingResources[0].resource;
+    } else {
+        return {};
+    }
+};
+
 const FhirApi = {
 
     defaultNhsNos: ["9658218865", "9658218873", "9658218989"],
@@ -15,8 +24,8 @@ const FhirApi = {
     getPatientInformation: async (nhsNo) => {
         const structuredRecord = await GPConnectDemonstratorApi.getStructuredRecord(nhsNo);
 
-        const fhirPatient = structuredRecord.entry.filter(resource => resource.resource.resourceType === "Patient")[0].resource;
-        const fhirMedicationStatement = structuredRecord.entry.filter(resource => resource.resource.resourceType === "MedicationStatement")[0].resource;
+        const fhirPatient = getFirst(structuredRecord, "Patient");
+        const fhirMedicationStatement = getFirst(structuredRecord, "MedicationStatement");
         
         return {fhirPatient, fhirMedicationStatement}
     },
