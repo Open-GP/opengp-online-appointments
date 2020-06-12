@@ -1,12 +1,18 @@
 .doctors-view .sharing-link {
-    margin-top: 30px;
+    margin-top: 10px;
     font-size: 1.2em;
     text-align: center;
 }
 
-.doctors-view .video-container {
+.doctors-view  {
     margin-top: 60px;
     display: flex;
+    justify-content: space-evenly;
+}
+
+.video-container .patient-data-container {
+    display: flex;
+    flex-direction: column;
     justify-content: space-evenly;
 }
 
