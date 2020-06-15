@@ -7,7 +7,7 @@ import 'fhir-react/build/bootstrap-reboot.min.css';
 const VideoStream = ({roomName, patientInformation, appointmentId}) => {
     const patientLink = `https://${window.location.hostname}/patient/${appointmentId}`;
 
-    const {fhirPatient, fhirMedicationStatement} = patientInformation;
+    const {fhirPatient, fhirMedicationStatements} = patientInformation;
 
     return <div className="doctors-view">
         <div className="video-container">
@@ -16,7 +16,11 @@ const VideoStream = ({roomName, patientInformation, appointmentId}) => {
         </div>
         <div className="patient-data-container">
             <Patient fhirResource={fhirPatient} fhirVersion={fhirVersions.STU3}/>
-            <MedicationStatement fhirResource={fhirMedicationStatement} fhirVersion={fhirVersions.STU3}/>
+            <div className="patient-Mediation-Statements">
+            {fhirMedicationStatements.map((fhirMedicationStatement, index) =>
+                <MedicationStatement fhirResource={fhirMedicationStatement} key={index} fhirVersion={fhirVersions.STU3}/>   
+            )}
+            </div>
         </div>
     </div>;
 };
