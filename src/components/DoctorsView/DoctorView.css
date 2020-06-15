@@ -15,6 +15,10 @@
     flex-direction: column;
     justify-content: space-evenly;
 }
+.patient-Mediation-Statements{
+    display: flex;
+    flex-direction: column;
+}
 
 .patient-selection {
     margin: 10px 10px 10px 10px;

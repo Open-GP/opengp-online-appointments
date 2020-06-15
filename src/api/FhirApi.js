@@ -9,6 +9,11 @@ const getFirst = (structuredRecord, resourceType) => {
     }
 };
 
+const getList = (structuredRecord, resourceType) => {
+    const matchingResources = structuredRecord.entry.filter(resource => resource.resource.resourceType === resourceType);
+    return matchingResources.map(m => m.resource);
+};
+
 const FhirApi = {
 
     defaultNhsNos: ["9658218865", "9658218873", "9658218989"],
@@ -25,9 +30,9 @@ const FhirApi = {
         const structuredRecord = await GPConnectDemonstratorApi.getStructuredRecord(nhsNo);
 
         const fhirPatient = getFirst(structuredRecord, "Patient");
-        const fhirMedicationStatement = getFirst(structuredRecord, "MedicationStatement");
-        
-        return {fhirPatient, fhirMedicationStatement}
+        const fhirMedicationStatements = getList(structuredRecord, "MedicationStatement").sort((a, b) => new Date(b.dateAsserted) - new Date(a.dateAsserted));
+        console.log(fhirMedicationStatements)
+        return {fhirPatient, fhirMedicationStatements}
     },
 
     getFhirPatient: nhsNo =>  GPConnectDemonstratorApi.getStructuredRecord(nhsNo)
