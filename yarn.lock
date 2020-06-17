@@ -10333,6 +10333,11 @@ supports-color@^7.0.0, supports-color@^7.1.0:
   dependencies:
     has-flag "^4.0.0"
 
+survey-react@^1.7.12:
+  version "1.7.12"
+  resolved "https://registry.yarnpkg.com/survey-react/-/survey-react-1.7.12.tgz#412bdaa944c385862cacb05fb5d15e1f1b2544ce"
+  integrity sha512-yNNgpkjurXdJlHEr+TDkUz8hEAq8sWjJZ9cmy9dSWAw062YmFgJVOyISkpYAAa2m8nGMMU/+zU4Pd3r/CXqFzQ==
+
 svg-parser@^2.0.0:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/svg-parser/-/svg-parser-2.0.4.tgz#fdc2e29e13951736140b76cb122c8ee6630eb6b5"

@@ -1,0 +1,64 @@
+{
+    "pages": [
+     {
+      "name": "page1",
+      "elements": [
+       {
+        "type": "boolean",
+        "name": "Do you have allergies?",
+        "title": "Do you have allergies?",
+        "labelTrue": "Yes",
+        "labelFalse": "No"
+       }
+      ]
+     },
+     {
+      "name": "page2",
+      "elements": [
+       {
+        "type": "text",
+        "name": "How do you describe your health lately?",
+        "title": "How do you describe your health lately?"
+       }
+      ]
+     },
+     {
+      "name": "page3",
+      "elements": [
+       {
+        "type": "text",
+        "name": "What is your date of birth?",
+        "title": "What is your date of birth?",
+        "inputType": "date",
+        "max": "2999-12-31"
+       }
+      ]
+     },
+     {
+      "name": "page4",
+      "elements": [
+       {
+        "type": "radiogroup",
+        "name": "What is your marital status?",
+        "title": "What is your marital status?",
+        "hasOther": true,
+        "choices": [
+         {
+          "value": "item1",
+          "text": "Married"
+         },
+         {
+          "value": "item2",
+          "text": "Widowed"
+         },
+         {
+          "value": "item3",
+          "text": "Single"
+         }
+        ],
+        "otherText": "Other"
+       }
+      ]
+     }
+    ]
+   }
