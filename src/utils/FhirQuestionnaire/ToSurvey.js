@@ -1,4 +1,4 @@
-import {FhirQuestionTypes, FhirParentTypes} from './Mapping'
+import {FhirQuestionTypes} from './Mapping'
 
 export const Transform = (fhirQuestionnair) => {
     let survey = {
@@ -9,15 +9,15 @@ export const Transform = (fhirQuestionnair) => {
 }
 
 const ParseItems = (items, survey, page) =>{
-    items.map((item) => {
-        if(page === undefined){
-            page = NewPage(item);
-            survey.pages.push(page)
-        }
-
+    items.forEach((item) => {
+       
         if(item.type === "group"){
+            page = NewPage(item, survey);
             ParseItems(item.item, survey, page)
         }else{
+            if(page === undefined){
+                page = NewPage(item, survey);
+            }
             var question = ItemToQuestion(item);
             page.elements.push(question);
         }
@@ -26,19 +26,20 @@ const ParseItems = (items, survey, page) =>{
 }
 
 
-const NewPage = (item) =>{
-    return {
+const NewPage = (item, survey) =>{
+    let page = {
         name: item.linkId, 
         title: item.text,
         elements: [],
     };
+    survey.pages.push(page)
+    return page;
 }
 
-const ItemToQuestion = (item, question) =>{
+const ItemToQuestion = (item) => {
     var question = JSON.parse(JSON.stringify(FhirQuestionTypes[item.type]));
     question.name = item.linkId;
     question.title = item.text;
     question.required = item.required? true: false;
-
     return question;
 }

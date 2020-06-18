@@ -168,4 +168,93 @@ describe("Transforsm FHIR Questionnair to Survey JS", () => {
 
         expect(Transform(input)).toEqual(output);
     });
+
+    test('It transforms a question and a group of boolean questions', () => {
+        const input = {
+            resourceType: "Questionnaire",
+            status: "active",
+            subjectType: ["Patient"],
+            item: [ 
+                {
+                    linkId: "1",
+                    text: "What is your gender?",
+                    type: "string"
+                },
+                {
+                    linkId: "2",
+                    text: "General questions",
+                    type: "group",
+                    item: [
+                        {
+                            linkId: "1",
+                            text: "Do you have allergies?",
+                            type: "boolean"
+                        },
+                        {
+                            linkId: "2",
+                            text: "Do you take any medication for allergies?",
+                            type: "boolean"
+                        }
+                    ]
+                }
+            ]
+        }
+
+        const output = {
+            pages: [
+                {
+                    name: "1",
+                    title: "What is your gender?",
+                    elements: [
+                        {
+                            type: "text",
+                            title: "What is your gender?",
+                            name: "1",
+                            required: false,
+                        }
+                    ]
+                },
+                {
+                    name: "2",
+                    title:"General questions",
+                    elements: [
+                        {
+                            type: "radiogroup",
+                            name: "1",
+                            required: false,
+                            title: "Do you have allergies?",
+                            choices: [
+                                {
+                                    value: "item1",
+                                    text: "Yes"
+                                },
+                                {
+                                    value: "item2",
+                                    text: "No"
+                                }
+                            ]       
+                        },
+                        {
+                            type: "radiogroup",
+                            name: "2",
+                            required: false,
+                            title: "Do you take any medication for allergies?",
+                            choices: [
+                                {
+                                    value: "item1",
+                                    text: "Yes"
+                                },
+                                {
+                                    value: "item2",
+                                    text: "No"
+                                }
+                            ]    
+                        }
+                    ]
+                }
+            ]
+        }
+
+        expect(Transform(input)).toEqual(output);
+    });
 });
