@@ -34,9 +34,19 @@ export const FhirQuestionTypes = {
             }
         ]
     },
-    date: {},
-    dateTime: {},
-    string: {type:"text"},
+    date: {
+        type: "text",
+        inputType: "date",
+        max: "2999-12-31"
+    },
+    dateTime: {
+        type: "text",
+        inputType: "datetime-local",
+        max: "2999-12-31"
+    },
+    string: { 
+        type:"text"
+    },
     text: {},
     url: {},
     choice: {},

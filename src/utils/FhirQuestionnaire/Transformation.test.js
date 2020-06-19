@@ -52,6 +52,77 @@ describe("Transforms FHIR Questionnair to Survey JS", () => {
         expect(Transform(input)).toEqual(output);
     });
 
+    test('It transforms a date question', () => {
+        const input = {
+            resourceType: "Questionnaire",
+            status: "active",
+            subjectType: ["Patient"],
+            item: [  
+                {
+                    linkId: "1",
+                    text: "What is your date of birth?",
+                    type: "date"
+                }
+            ]
+        }
+
+        const output = {
+            "pages": [
+                {
+                    name: "1",
+                    title: "What is your date of birth?",
+                    elements: [
+                        {
+                            type: "text",
+                            title: "What is your date of birth?",
+                            name: "1",
+                            required: false,
+                            inputType: "date",
+                            max: "2999-12-31"
+                        }
+                    ]
+                }
+            ]
+        }
+
+        expect(Transform(input)).toEqual(output);
+    });
+
+    test('It transforms a dateTime question', () => {
+        const input = {
+            resourceType: "Questionnaire",
+            status: "active",
+            subjectType: ["Patient"],
+            item: [  
+                {
+                    linkId: "vitaminiKDose1",
+                    text: "1st dose",
+                    type: "dateTime"
+                  },
+            ]
+        }
+
+        const output = {
+            "pages": [
+                {
+                    name: "vitaminiKDose1",
+                    title: "1st dose",
+                    elements: [
+                        {
+                            type: "text",
+                            title: "1st dose",
+                            name: "vitaminiKDose1",
+                            required: false,
+                            inputType: "datetime-local",
+                            max: "2999-12-31"
+                        }
+                    ]
+                }
+            ]
+        }
+
+        expect(Transform(input)).toEqual(output);
+    });
     test('It transforms a decimal question', () => {
         const input = {
             resourceType: "Questionnaire",
