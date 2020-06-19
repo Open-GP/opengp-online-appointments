@@ -3,17 +3,37 @@ export const FhirQuestionTypes = {
         type: "radiogroup",
         choices: [
             {
-                value: "item1",
+                value: true,
                 text: "Yes"
             },
             {
-                value: "item2",
+                value: false,
                 text: "No"
             }
         ]
     },
-    decimal: {},
-    interger: {},
+    decimal: {
+        type: "text",
+        inputType: "number",
+        validators: [
+            {
+                type: "regex",
+                text: "Must be a decimal number",
+                regex: "-?(0|[1-9][0-9]*)(\\.[0-9]+)?([eE][+-]?[0-9]+)?"
+            }
+        ]
+    },
+    integer: {
+        type: "text",
+        inputType: "number",
+        validators: [
+            {
+                type: "regex",
+                text: "Must be whole number",
+                regex: "^([0]|[-+]?[1-9][0-9]*)$"
+            }
+        ]
+    },
     date: {},
     dateTime: {},
     string: {type:"text"},

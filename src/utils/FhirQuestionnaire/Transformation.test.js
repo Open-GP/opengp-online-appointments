@@ -1,6 +1,6 @@
 import {Transform} from './ToSurvey'
 
-describe("Transforsm FHIR Questionnair to Survey JS", () => {
+describe("Transforms FHIR Questionnair to Survey JS", () => {
     test('It should make an empty questionnair', () => {
         const input = {
             resourceType: "Questionnaire",
@@ -18,7 +18,7 @@ describe("Transforsm FHIR Questionnair to Survey JS", () => {
         expect(Transform(input)).toEqual(output);
     });
 
-    test('It transform a string question', () => {
+    test('It transforms a string question', () => {
         const input = {
             resourceType: "Questionnaire",
             status: "active",
@@ -52,8 +52,95 @@ describe("Transforsm FHIR Questionnair to Survey JS", () => {
         expect(Transform(input)).toEqual(output);
     });
 
+    test('It transforms a decimal question', () => {
+        const input = {
+            resourceType: "Questionnaire",
+            status: "active",
+            subjectType: ["Patient"],
+            item: [  
+                {
+                    linkId: "birthWeight",
+                    text: "Birth weight (kg)",
+                    type: "decimal"
+                  }
+            ]
+        }
 
-    test('It transform a boolean question', () => {
+        const output = {
+            "pages": [
+                {
+                    name: "birthWeight",
+                    title: "Birth weight (kg)",
+                    elements: [
+                        {
+
+                            title: "Birth weight (kg)",
+                            name: "birthWeight",
+                            required: false,
+                            type: "text",
+                            inputType: "number",
+                            validators: [
+                                {
+                                    type: "regex",
+                                    text: "Must be a decimal number",
+                                    regex: "-?(0|[1-9][0-9]*)(\\.[0-9]+)?([eE][+-]?[0-9]+)?"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+
+        expect(Transform(input)).toEqual(output);
+    });
+
+
+    test('It transforms a integer question', () => {
+        const input = {
+            resourceType: "Questionnaire",
+            status: "active",
+            subjectType: ["Patient"],
+            item: [  
+                {
+                    linkId: "Age",
+                    text: "Age in years",
+                    type: "integer"
+                  }
+            ]
+        }
+
+        const output = {
+            "pages": [
+                {
+                    name: "Age",
+                    title: "Age in years",
+                    elements: [
+                        {
+
+                            title: "Age in years",
+                            name: "Age",
+                            required: false,
+                            type: "text",
+                            inputType: "number",
+                            validators: [
+                                {
+                                    type: "regex",
+                                    text: "Must be whole number",
+                                    regex: "^([0]|[-+]?[1-9][0-9]*)$"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+
+        expect(Transform(input)).toEqual(output);
+    });
+
+
+    test('It transforms a boolean question', () => {
         const input = {
             resourceType: "Questionnaire",
             status: "active",
@@ -80,11 +167,11 @@ describe("Transforsm FHIR Questionnair to Survey JS", () => {
                             title: "Do you have allergies?",
                             choices: [
                                 {
-                                    value: "item1",
+                                    value: true,
                                     text: "Yes"
                                 },
                                 {
-                                    value: "item2",
+                                    value: false,
                                     text: "No"
                                 }
                             ]      
@@ -136,11 +223,11 @@ describe("Transforsm FHIR Questionnair to Survey JS", () => {
                             title: "Do you have allergies?",
                             choices: [
                                 {
-                                    value: "item1",
+                                    value: true,
                                     text: "Yes"
                                 },
                                 {
-                                    value: "item2",
+                                    value: false,
                                     text: "No"
                                 }
                             ]       
@@ -152,11 +239,11 @@ describe("Transforsm FHIR Questionnair to Survey JS", () => {
                             title: "Do you take any medication for allergies?",
                             choices: [
                                 {
-                                    value: "item1",
+                                    value: true,
                                     text: "Yes"
                                 },
                                 {
-                                    value: "item2",
+                                    value: false,
                                     text: "No"
                                 }
                             ]    
@@ -225,11 +312,11 @@ describe("Transforsm FHIR Questionnair to Survey JS", () => {
                             title: "Do you have allergies?",
                             choices: [
                                 {
-                                    value: "item1",
+                                    value: true,
                                     text: "Yes"
                                 },
                                 {
-                                    value: "item2",
+                                    value: false,
                                     text: "No"
                                 }
                             ]       
@@ -241,11 +328,11 @@ describe("Transforsm FHIR Questionnair to Survey JS", () => {
                             title: "Do you take any medication for allergies?",
                             choices: [
                                 {
-                                    value: "item1",
+                                    value: true,
                                     text: "Yes"
                                 },
                                 {
-                                    value: "item2",
+                                    value: false,
                                     text: "No"
                                 }
                             ]    

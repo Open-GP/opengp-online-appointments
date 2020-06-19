@@ -4,13 +4,11 @@ export const Transform = (fhirQuestionnair) => {
     let survey = {
         pages: []
     }
-
     return ParseItems(fhirQuestionnair.item, survey)
 }
 
 const ParseItems = (items, survey, page) =>{
     items.forEach((item) => {
-       
         if(item.type === "group"){
             page = NewPage(item, survey);
             ParseItems(item.item, survey, page)
