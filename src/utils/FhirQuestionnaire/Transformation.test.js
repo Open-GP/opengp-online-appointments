@@ -255,6 +255,137 @@ describe("Transforms FHIR Questionnair to Survey JS", () => {
         expect(Transform(input)).toEqual(output);
     });
 
+    test('It transforms a choice question', () => {
+        const input = {
+            resourceType: "Questionnaire",
+            status: "active",
+            subjectType: ["Patient"],
+            item: [  
+                {
+                    "linkId": "vitaminKgiven",
+                    "text": "Vitamin K given",
+                    "type": "choice",
+                    "answerOption": [
+                      {
+                        "valueCoding": {
+                          "code": "INJECTION"
+                        }
+                      },
+                      {
+                        "valueCoding": {
+                          "code": "INTRAVENOUS"
+                        }
+                      },
+                      {
+                        "valueCoding": {
+                          "code": "ORAL"
+                        }
+                      }
+                    ]
+                }
+            ]
+        }
+
+        const output = {
+            "pages": [
+                {
+                    name: "vitaminKgiven",
+                    title: "Vitamin K given",
+                    elements: [
+                        {
+                            type: "radiogroup",
+                            name: "vitaminKgiven",
+                            required: false,
+                            title: "Vitamin K given",
+                            choices: [
+                                {
+                                    value: "INJECTION",
+                                    text: "INJECTION"
+                                },
+                                {
+                                    value: "INTRAVENOUS",
+                                    text: "INTRAVENOUS"
+                                },
+                                {
+                                    value: "ORAL",
+                                    text: "ORAL"
+                                }
+                            ]      
+                        }
+                    ]
+                }
+            ]
+        }
+
+        expect(Transform(input)).toEqual(output);
+    });
+
+    test('It transforms a open-choice question', () => {
+        const input = {
+            resourceType: "Questionnaire",
+            status: "active",
+            subjectType: ["Patient"],
+            item: [  
+                {
+                    "linkId": "vitaminKgiven",
+                    "text": "Vitamin K given",
+                    "type": "open-choice",
+                    "answerOption": [
+                      {
+                        "valueCoding": {
+                          "code": "INJECTION"
+                        }
+                      },
+                      {
+                        "valueCoding": {
+                          "code": "INTRAVENOUS"
+                        }
+                      },
+                      {
+                        "valueCoding": {
+                          "code": "ORAL"
+                        }
+                      }
+                    ]
+                }
+            ]
+        }
+
+        const output = {
+            "pages": [
+                {
+                    name: "vitaminKgiven",
+                    title: "Vitamin K given",
+                    elements: [
+                        {
+                            type: "radiogroup",
+                            name: "vitaminKgiven",
+                            required: false,
+                            title: "Vitamin K given",
+                            hasOther: true,
+                            choices: [
+                                {
+                                    value: "INJECTION",
+                                    text: "INJECTION"
+                                },
+                                {
+                                    value: "INTRAVENOUS",
+                                    text: "INTRAVENOUS"
+                                },
+                                {
+                                    value: "ORAL",
+                                    text: "ORAL"
+                                }
+                            ]      
+                        }
+                    ]
+                }
+            ]
+        }
+
+        expect(Transform(input)).toEqual(output);
+    });
+
     test('It transforms a group of boolean questions', () => {
         const input = {
             resourceType: "Questionnaire",

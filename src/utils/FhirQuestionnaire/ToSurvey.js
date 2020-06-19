@@ -39,5 +39,25 @@ const ItemToQuestion = (item) => {
     question.name = item.linkId;
     question.title = item.text;
     question.required = item.required? true: false;
+    if(item.type === "choice" || item.type === "open-choice" ){
+        question = AddChoices(item, question);
+    }
     return question;
+}
+
+const AddChoices = (item, question) =>{
+    item.answerOption.forEach(answer => {
+        question.choices.push(NewChoice(answer));
+    })
+    return question;
+}
+
+const NewChoice = (answer) => {
+    if(answer["valueCoding"] !== undefined ){
+        return {
+            value: answer.valueCoding.code,
+            text: answer.valueCoding.code,
+        }
+    }
+    return {}
 }

@@ -49,8 +49,15 @@ export const FhirQuestionTypes = {
     },
     text: {},
     url: {},
-    choice: {},
-    openChoice: {},
+    choice: {
+        type: "radiogroup",
+        choices: []
+    },
+    "open-choice": {        
+        type: "radiogroup",
+        hasOther: true,
+        choices: []
+    },
     attachment: {},
     refrence: {},
     quanity: {}
