@@ -1,41 +1,53 @@
 import {FhirQuestionTypes} from './Mapping'
 
 export const Transform = (fhirQuestionnair) => {
+
+    return ParseToPages(fhirQuestionnair)
+
+}
+
+const ParseToPages = (fhirQuestionnair) => {
     let survey = {
         pages: []
     }
-    return ParseItems(fhirQuestionnair.item, survey)
-}
 
-const ParseItems = (items, survey, page) =>{
-    items.forEach((item) => {
-        if(item.type === "group"){
-            page = NewPage(item, survey);
-            ParseItems(item.item, survey, page)
-        }else{
-            if(page === undefined){
-                page = NewPage(item, survey);
-            }
-            var question = ItemToQuestion(item);
-            page.elements.push(question);
+    survey.pages = fhirQuestionnair.item.map((item) => {
+        let page = NewPage(item)
+        if (item.type === "group") {
+            page.elements = ParseItems(item.item);
+        } else {
+            page.elements = ParseItems([item]);
         }
+        return page
     })
-    return survey
+
+    return survey;
 }
 
+const ParseItems = (items) => {
+    return items.map(item => {
+        if(item.item !== undefined){
+            let pannel = GroupToPannel(item)
+            if(item.type !== "group"){
+                pannel.elements = [ItemToQuestion(item), ...pannel.elements];
+            }
+            return pannel;
+        }
+        return ItemToQuestion(item);
+    })  
+}
 
-const NewPage = (item, survey) =>{
+const NewPage = (item) => {
     let page = {
         name: item.linkId, 
         title: item.text,
         elements: [],
     };
-    survey.pages.push(page)
     return page;
 }
 
 const ItemToQuestion = (item) => {
-    var question = JSON.parse(JSON.stringify(FhirQuestionTypes[item.type]));
+    let question = JSON.parse(JSON.stringify(FhirQuestionTypes[item.type]));
     question.name = item.linkId;
     question.title = item.text;
     question.required = item.required? true: false;
@@ -43,6 +55,15 @@ const ItemToQuestion = (item) => {
         question = AddChoices(item, question);
     }
     return question;
+}
+
+const GroupToPannel = (group) => {
+    return {
+        name: group.linkId,
+        title: group.text,
+        type: "panel",
+        elements: ParseItems(group.item),
+    }
 }
 
 const AddChoices = (item, question) =>{
@@ -53,7 +74,7 @@ const AddChoices = (item, question) =>{
 }
 
 const NewChoice = (answer) => {
-    if(answer["valueCoding"] !== undefined ){
+    if("valueCoding" in answer){
         return {
             value: answer.valueCoding.code,
             text: answer.valueCoding.code,
