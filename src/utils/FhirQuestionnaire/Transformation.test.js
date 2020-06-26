@@ -52,6 +52,40 @@ describe("Transforms FHIR Questionnair to Survey JS", () => {
         expect(Transform(input)).toEqual(output);
     });
 
+    test('It transforms a text question', () => {
+        const input = {
+            resourceType: "Questionnaire",
+            status: "active",
+            subjectType: ["Patient"],
+            item: [  
+                {
+                    linkId: "1",
+                    text: "What is your gender?",
+                    type: "text"
+                }
+            ]
+        }
+
+        const output = {
+            "pages": [
+                {
+                    name: "1",
+                    title: "What is your gender?",
+                    elements: [
+                        {
+                            type: "text",
+                            title: "What is your gender?",
+                            name: "1",
+                            required: false,
+                        }
+                    ]
+                }
+            ]
+        }
+
+        expect(Transform(input)).toEqual(output);
+    });
+
     test('It transforms a date question', () => {
         const input = {
             resourceType: "Questionnaire",
@@ -386,6 +420,41 @@ describe("Transforms FHIR Questionnair to Survey JS", () => {
         expect(Transform(input)).toEqual(output);
     });
 
+    test('It transforms a attachment question', () => {
+        const input = {
+            resourceType: "Questionnaire",
+            status: "active",
+            subjectType: ["Patient"],
+            item: [  
+                {
+                    linkId: "1",
+                    text: "Upload photos:",
+                    type: "attachment"
+                }
+            ]
+        }
+
+        const output = {
+            "pages": [
+                {
+                    name: "1",
+                    title: "Upload photos:",
+                    elements: [
+                        {
+                            type: "file",
+                            maxSize:0,
+                            title: "Upload photos:",
+                            name: "1",
+                            required: false,
+                        }
+                    ]
+                }
+            ]
+        }
+
+        expect(Transform(input)).toEqual(output);
+    });
+
     test('It transforms a group of boolean questions', () => {
         const input = {
             resourceType: "Questionnaire",
@@ -457,6 +526,71 @@ describe("Transforms FHIR Questionnair to Survey JS", () => {
 
         expect(Transform(input)).toEqual(output);
     });
+
+    test('It transforms a nested items into pannels', () => {
+        const input = {
+            resourceType: "Questionnaire",
+            status: "active",
+            subjectType: ["Patient"],
+            item: [ 
+                {
+                    linkId: "1",
+                    text: "General questions",
+                    type: "group",
+                    item: [
+                        {
+                            linkId: "neonatalInformation",
+                            text: "Neonatal Information",
+                            type: "group",
+                            item: [
+                                {
+                                    linkId: "birthWeight",
+                                    text: "Birth weight (kg)",
+                                    type: "decimal"
+                                },
+                            ]
+                        },
+                    ]
+                }
+            ]
+        }
+
+        const output = {
+            pages: [
+                {
+                    name: "1",
+                    title:"General questions",
+                    elements: [
+                        {
+                            type: "panel",
+                            title: "Neonatal Information",
+                            name: "neonatalInformation",
+                            elements: [
+                                {
+                                    title: "Birth weight (kg)",
+                                    name: "birthWeight",
+                                    required: false,
+                                    type: "text",
+                                    inputType: "number",
+                                    validators: [
+                                        {
+                                            type: "regex",
+                                            text: "Must be a decimal number",
+                                            regex: "-?(0|[1-9][0-9]*)(\\.[0-9]+)?([eE][+-]?[0-9]+)?"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                        
+                    ]
+                }
+            ]
+        }
+
+        expect(Transform(input)).toEqual(output);
+    });
+
 
     test('It transforms a question and a group of boolean questions', () => {
         const input = {

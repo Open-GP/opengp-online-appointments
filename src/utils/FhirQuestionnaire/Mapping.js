@@ -47,7 +47,9 @@ export const FhirQuestionTypes = {
     string: { 
         type:"text"
     },
-    text: {},
+    text: {
+        type:"text"
+    },
     url: {},
     choice: {
         type: "radiogroup",
@@ -58,7 +60,10 @@ export const FhirQuestionTypes = {
         hasOther: true,
         choices: []
     },
-    attachment: {},
+    attachment: {
+        type: "file",
+        maxSize: 0
+    },
     refrence: {},
     quanity: {}
 }
