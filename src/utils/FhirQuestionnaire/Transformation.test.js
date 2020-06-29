@@ -1,4 +1,5 @@
 import Transform from './Transform';
+import Mapping from './Mapping';
 
 describe('Transforms FHIR Questionnair to Survey JS', () => {
   test('It should make an empty questionnair', () => {
@@ -39,9 +40,9 @@ describe('Transforms FHIR Questionnair to Survey JS', () => {
           title: 'What is your gender?',
           elements: [
             {
-              type: 'text',
-              title: 'What is your gender?',
+              ...Mapping.string,
               name: '1',
+              title: 'What is your gender?',
               required: false,
             },
           ],
@@ -677,4 +678,70 @@ describe('Transforms FHIR Questionnair to Survey JS', () => {
 
     expect(Transform(input)).toEqual(output);
   });
+});
+
+test('It transforms a conditional child of boolean question', () => {
+  const input = {
+    resourceType: 'Questionnaire',
+    status: 'active',
+    subjectType: ['Patient'],
+    item: [
+      {
+        linkId: 'hepBgiven',
+        text: 'Hep B given y / n',
+        type: 'boolean',
+        item: [
+          {
+            linkId: 'hepBgivenDate',
+            text: 'Date given',
+            type: 'date',
+          },
+        ],
+      },
+    ],
+  };
+
+  const output = {
+    pages: [
+      {
+        name: 'hepBgiven',
+        title: 'Hep B given y / n',
+        elements: [{
+          name: 'hepBgiven',
+          title: 'Hep B given y / n',
+          type: 'panel',
+          elements: [
+            {
+              type: 'radiogroup',
+              name: 'hepBgiven',
+              required: false,
+              title: 'Hep B given y / n',
+              choices: [
+                {
+                  value: true,
+                  text: 'Yes',
+                },
+                {
+                  value: false,
+                  text: 'No',
+                },
+              ],
+            },
+            {
+              inputType: 'date',
+              max: '2999-12-31',
+              name: 'hepBgivenDate',
+              required: false,
+              title: 'Date given',
+              type: 'text',
+              visibleIf: "{hepBgiven} = 'true'",
+            },
+          ],
+        }],
+      },
+
+    ],
+  };
+
+  expect(Transform(input)).toEqual(output);
 });
