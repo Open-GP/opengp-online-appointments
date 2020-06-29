@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import * as Survey from 'survey-react';
 import Transform from '../../utils/FhirQuestionnaire/Transform';
-import Questions from './SampleFhirQuestionnaire.json';
+import Questions from './SampleFhirQuestionnaire2.json';
 import 'survey-react/survey.css';
 
 const PatientSurvey = () => {

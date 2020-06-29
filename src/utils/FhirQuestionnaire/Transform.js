@@ -32,7 +32,7 @@ const ParseItems = (items, parent) => items.map((item) => {
 });
 
 const ChildrenToPannel = (item) => ({
-  name: item.linkId,
+  name: `${item.linkId}-panel`,
   title: item.text,
   type: 'panel',
   elements: ParseItems(item.item, item),
@@ -40,7 +40,7 @@ const ChildrenToPannel = (item) => ({
 
 const NewPage = (item) => {
   const page = {
-    name: item.linkId,
+    name: `${item.linkId}-page`,
     title: item.text,
     elements: [],
   };
@@ -71,6 +71,8 @@ const AddDisplayLogic = (parent, question) => {
   if (parent !== undefined) {
     if (parent.type === 'boolean') {
       quest = AddCondionalBooleanQuestion(parent, quest);
+    } else if (parent.enableWhen !== undefined) {
+      quest = GetEnableWhenLogic(parent, quest);
     }
   }
   return quest;
@@ -80,6 +82,21 @@ const AddCondionalBooleanQuestion = (parent, question) => ({
   ...question,
   visibleIf: `{${parent.linkId}} = 'true'`,
 });
+
+const GetEnableWhenLogic = (parent, question) => {
+  const logic = parent.enableWhen.map((condition) => {
+    if (condition.operator === 'exists') {
+      return `{${condition.question}} notempty`;
+    }
+    // TODO logic operator answers
+    return `{${condition.question}} ${condition.operator} }`;
+  });
+
+  return {
+    ...question,
+    visibleIf: logic.join(' and '),
+  };
+};
 
 const NewChoice = (answer) => {
   if ('valueCoding' in answer) {

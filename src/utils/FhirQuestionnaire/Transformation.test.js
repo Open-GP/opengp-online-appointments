@@ -36,7 +36,7 @@ describe('Transforms FHIR Questionnair to Survey JS', () => {
     const output = {
       pages: [
         {
-          name: '1',
+          name: '1-page',
           title: 'What is your gender?',
           elements: [
             {
@@ -70,7 +70,7 @@ describe('Transforms FHIR Questionnair to Survey JS', () => {
     const output = {
       pages: [
         {
-          name: '1',
+          name: '1-page',
           title: 'What is your gender?',
           elements: [
             {
@@ -104,7 +104,7 @@ describe('Transforms FHIR Questionnair to Survey JS', () => {
     const output = {
       pages: [
         {
-          name: '1',
+          name: '1-page',
           title: 'What is your date of birth?',
           elements: [
             {
@@ -140,7 +140,7 @@ describe('Transforms FHIR Questionnair to Survey JS', () => {
     const output = {
       pages: [
         {
-          name: 'vitaminiKDose1',
+          name: 'vitaminiKDose1-page',
           title: '1st dose',
           elements: [
             {
@@ -175,7 +175,7 @@ describe('Transforms FHIR Questionnair to Survey JS', () => {
     const output = {
       pages: [
         {
-          name: 'birthWeight',
+          name: 'birthWeight-page',
           title: 'Birth weight (kg)',
           elements: [
             {
@@ -218,7 +218,7 @@ describe('Transforms FHIR Questionnair to Survey JS', () => {
     const output = {
       pages: [
         {
-          name: 'Age',
+          name: 'Age-page',
           title: 'Age in years',
           elements: [
             {
@@ -261,7 +261,7 @@ describe('Transforms FHIR Questionnair to Survey JS', () => {
     const output = {
       pages: [
         {
-          name: '1',
+          name: '1-page',
           title: 'Do you have allergies?',
           elements: [
             {
@@ -322,7 +322,7 @@ describe('Transforms FHIR Questionnair to Survey JS', () => {
     const output = {
       pages: [
         {
-          name: 'vitaminKgiven',
+          name: 'vitaminKgiven-page',
           title: 'Vitamin K given',
           elements: [
             {
@@ -387,7 +387,7 @@ describe('Transforms FHIR Questionnair to Survey JS', () => {
     const output = {
       pages: [
         {
-          name: 'vitaminKgiven',
+          name: 'vitaminKgiven-page',
           title: 'Vitamin K given',
           elements: [
             {
@@ -436,7 +436,7 @@ describe('Transforms FHIR Questionnair to Survey JS', () => {
     const output = {
       pages: [
         {
-          name: '1',
+          name: '1-page',
           title: 'Upload photos:',
           elements: [
             {
@@ -483,7 +483,7 @@ describe('Transforms FHIR Questionnair to Survey JS', () => {
     const output = {
       pages: [
         {
-          name: '1',
+          name: '1-page',
           title: 'General questions',
           elements: [
             {
@@ -557,13 +557,13 @@ describe('Transforms FHIR Questionnair to Survey JS', () => {
     const output = {
       pages: [
         {
-          name: '1',
+          name: '1-page',
           title: 'General questions',
           elements: [
             {
               type: 'panel',
               title: 'Neonatal Information',
-              name: 'neonatalInformation',
+              name: 'neonatalInformation-panel',
               elements: [
                 {
                   title: 'Birth weight (kg)',
@@ -624,7 +624,7 @@ describe('Transforms FHIR Questionnair to Survey JS', () => {
     const output = {
       pages: [
         {
-          name: '1',
+          name: '1-page',
           title: 'What is your gender?',
           elements: [
             {
@@ -636,7 +636,7 @@ describe('Transforms FHIR Questionnair to Survey JS', () => {
           ],
         },
         {
-          name: '2',
+          name: '2-page',
           title: 'General questions',
           elements: [
             {
@@ -678,70 +678,182 @@ describe('Transforms FHIR Questionnair to Survey JS', () => {
 
     expect(Transform(input)).toEqual(output);
   });
-});
 
-test('It transforms a conditional child of boolean question', () => {
-  const input = {
-    resourceType: 'Questionnaire',
-    status: 'active',
-    subjectType: ['Patient'],
-    item: [
-      {
-        linkId: 'hepBgiven',
-        text: 'Hep B given y / n',
-        type: 'boolean',
-        item: [
-          {
-            linkId: 'hepBgivenDate',
-            text: 'Date given',
-            type: 'date',
-          },
-        ],
-      },
-    ],
-  };
-
-  const output = {
-    pages: [
-      {
-        name: 'hepBgiven',
-        title: 'Hep B given y / n',
-        elements: [{
-          name: 'hepBgiven',
-          title: 'Hep B given y / n',
-          type: 'panel',
-          elements: [
+  test('It transforms a conditional child of boolean question', () => {
+    const input = {
+      resourceType: 'Questionnaire',
+      status: 'active',
+      subjectType: ['Patient'],
+      item: [
+        {
+          linkId: 'hepBgiven',
+          text: 'Hep B given y / n',
+          type: 'boolean',
+          item: [
             {
-              type: 'radiogroup',
-              name: 'hepBgiven',
-              required: false,
-              title: 'Hep B given y / n',
-              choices: [
+              linkId: 'hepBgivenDate',
+              text: 'Date given',
+              type: 'date',
+            },
+          ],
+        },
+      ],
+    };
+
+    const output = {
+      pages: [
+        {
+          name: 'hepBgiven-page',
+          title: 'Hep B given y / n',
+          elements: [{
+            name: 'hepBgiven-panel',
+            title: 'Hep B given y / n',
+            type: 'panel',
+            elements: [
+              {
+                type: 'radiogroup',
+                name: 'hepBgiven',
+                required: false,
+                title: 'Hep B given y / n',
+                choices: [
+                  {
+                    value: true,
+                    text: 'Yes',
+                  },
+                  {
+                    value: false,
+                    text: 'No',
+                  },
+                ],
+              },
+              {
+                inputType: 'date',
+                max: '2999-12-31',
+                name: 'hepBgivenDate',
+                required: false,
+                title: 'Date given',
+                type: 'text',
+                visibleIf: "{hepBgiven} = 'true'",
+              },
+            ],
+          }],
+        },
+
+      ],
+    };
+
+    expect(Transform(input)).toEqual(output);
+  });
+
+  test('It transforms a conditional children of group', () => {
+    const input = {
+      resourceType: 'Questionnaire',
+      status: 'active',
+      subjectType: ['Patient'],
+      item: [
+        {
+          linkId: 'vitaminKgiven',
+          text: 'Vitamin K given',
+          type: 'choice',
+          answerOption: [
+            {
+              valueCoding: {
+                code: 'INJECTION',
+              },
+            },
+            {
+              valueCoding: {
+                code: 'INTRAVENOUS',
+              },
+            },
+            {
+              valueCoding: {
+                code: 'ORAL',
+              },
+            },
+          ],
+          item: [
+            {
+              linkId: 'vitaminKgivenDoses',
+              type: 'group',
+              enableWhen: [
                 {
-                  value: true,
-                  text: 'Yes',
+                  question: 'vitaminKgiven',
+                  operator: 'exists',
+                  answerBoolean: true,
+                },
+              ],
+              item: [
+                {
+                  linkId: 'vitaminiKDose1',
+                  text: '1st dose',
+                  type: 'dateTime',
                 },
                 {
-                  value: false,
-                  text: 'No',
+                  linkId: 'vitaminiKDose2',
+                  text: '2nd dose',
+                  type: 'dateTime',
                 },
               ],
             },
+          ],
+        },
+      ],
+    };
+
+    const output = {
+      pages: [
+        {
+          name: 'vitaminKgiven-page',
+          title: 'Vitamin K given',
+          elements: [
             {
-              inputType: 'date',
-              max: '2999-12-31',
-              name: 'hepBgivenDate',
-              required: false,
-              title: 'Date given',
-              type: 'text',
-              visibleIf: "{hepBgiven} = 'true'",
+              name: 'vitaminKgiven-panel',
+              title: 'Vitamin K given',
+              type: 'panel',
+              elements: [
+                {
+                  type: 'radiogroup',
+                  choices: [
+                    { value: 'INJECTION', text: 'INJECTION' },
+                    { value: 'INTRAVENOUS', text: 'INTRAVENOUS' },
+                    { value: 'ORAL', text: 'ORAL' },
+                  ],
+                  name: 'vitaminKgiven',
+                  title: 'Vitamin K given',
+                  required: false,
+                },
+                {
+                  name: 'vitaminKgivenDoses-panel',
+                  type: 'panel',
+                  elements: [
+                    {
+                      type: 'text',
+                      inputType: 'datetime-local',
+                      max: '2999-12-31',
+                      name: 'vitaminiKDose1',
+                      title: '1st dose',
+                      required: false,
+                      visibleIf: '{vitaminKgiven} notempty',
+                    },
+                    {
+                      type: 'text',
+                      inputType: 'datetime-local',
+                      max: '2999-12-31',
+                      name: 'vitaminiKDose2',
+                      title: '2nd dose',
+                      required: false,
+                      visibleIf: '{vitaminKgiven} notempty',
+                    },
+                  ],
+                },
+              ],
             },
           ],
-        }],
-      },
+        },
+      ],
+    };
 
-    ],
-  };
-
-  expect(Transform(input)).toEqual(output);
+    expect(Transform(input)).toEqual(output);
+  });
 });
