@@ -1,0 +1,30 @@
+.doctors-view .sharing-link {
+  margin-top: 10px;
+  font-size: 1.2em;
+  text-align: center;
+}
+
+.doctors-view {
+  margin-top: 60px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.video-container .patient-data-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.patient-Mediation-Statements {
+  display: flex;
+  flex-direction: column;
+}
+
+.patient-selection {
+  margin: 10px 10px 10px 10px;
+}
+
+.select {
+  margin-right: 10px;
+}

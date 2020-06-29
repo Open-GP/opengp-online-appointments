@@ -4,7 +4,7 @@ import PatientChoice from './PatientChoice';
 import VideoStream from './VideoStream';
 
 import FhirApi from '../../api/FhirApi';
-import './DoctorView.css';
+import './DoctorView.scss';
 
 const DoctorView = () => {
   const [patientInformation, setPatientInformation] = useState();

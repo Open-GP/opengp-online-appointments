@@ -30,7 +30,9 @@
     "eject": "react-scripts eject",
     "deploy": "aws s3 sync build/ s3://appointments.opengp.org --acl public-read",
     "purgeCloudfront": "aws cloudfront create-invalidation --distribution-id E3333L87WRWG8R --paths \"/*,/\"",
-    "lint": "eslint \"**/*.js\" --ignore-pattern node_modules/"
+    "lint": "concurrently \"yarn run lint:*\" ",
+    "lint:js": "eslint \"**/*.js\" --ignore-pattern node_modules/",
+    "lint:style": "stylelint src/**/*.{css,scss}"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -48,9 +50,12 @@
     ]
   },
   "devDependencies": {
+    "concurrently": "^5.2.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-plugin-import": "^2.21.2",
     "eslint-plugin-jsx-a11y": "^6.3.1",
-    "eslint-plugin-react": "^7.20.0"
+    "eslint-plugin-react": "^7.20.0",
+    "stylelint": "^13.6.1",
+    "stylelint-config-standard": "^20.0.0"
   }
 }
