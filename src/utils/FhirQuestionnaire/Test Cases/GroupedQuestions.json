@@ -1,0 +1,69 @@
+{
+  "description": "Grouped Questions",
+  "input": {
+    "resourceType": "Questionnaire",
+    "status": "active",
+    "subjectType": ["Patient"],
+    "item": [
+      {
+        "linkId": "1",
+        "text": "General questions",
+        "type": "group",
+        "item": [
+          {
+            "linkId": "1",
+            "text": "Do you have allergies?",
+            "type": "boolean"
+          },
+          {
+            "linkId": "2",
+            "text": "Do you take any medication for allergies?",
+            "type": "boolean"
+          }
+        ]
+      }
+    ]
+  },
+  "output": {
+    "pages": [
+      {
+        "name": "1-page",
+        "title": "General questions",
+        "elements": [
+          {
+            "type": "radiogroup",
+            "name": "1",
+            "required": false,
+            "title": "Do you have allergies?",
+            "choices": [
+              {
+                "value": true,
+                "text": "Yes"
+              },
+              {
+                "value": false,
+                "text": "No"
+              }
+            ]
+          },
+          {
+            "type": "radiogroup",
+            "name": "2",
+            "required": false,
+            "title": "Do you take any medication for allergies?",
+            "choices": [
+              {
+                "value": true,
+                "text": "Yes"
+              },
+              {
+                "value": false,
+                "text": "No"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

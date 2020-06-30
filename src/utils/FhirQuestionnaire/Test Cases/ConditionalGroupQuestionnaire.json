@@ -1,0 +1,109 @@
+{
+  "description": "Condtional Group Questionnaire",
+  "input": {
+    "resourceType": "Questionnaire",
+    "status": "active",
+    "subjectType": ["Patient"],
+    "item": [
+      {
+        "linkId": "vitaminKgiven",
+        "text": "Vitamin K given",
+        "type": "choice",
+        "answerOption": [
+          {
+            "valueCoding": {
+              "code": "INJECTION"
+            }
+          },
+          {
+            "valueCoding": {
+              "code": "INTRAVENOUS"
+            }
+          },
+          {
+            "valueCoding": {
+              "code": "ORAL"
+            }
+          }
+        ],
+        "item": [
+          {
+            "linkId": "vitaminKgivenDoses",
+            "type": "group",
+            "enableWhen": [
+              {
+                "question": "vitaminKgiven",
+                "operator": "exists",
+                "answerBoolean": true
+              }
+            ],
+            "item": [
+              {
+                "linkId": "vitaminiKDose1",
+                "text": "1st dose",
+                "type": "dateTime"
+              },
+              {
+                "linkId": "vitaminiKDose2",
+                "text": "2nd dose",
+                "type": "dateTime"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "output": {
+    "pages": [
+      {
+        "name": "vitaminKgiven-page",
+        "title": "Vitamin K given",
+        "elements": [
+          {
+            "name": "vitaminKgiven-panel",
+            "title": "Vitamin K given",
+            "type": "panel",
+            "elements": [
+              {
+                "type": "radiogroup",
+                "choices": [
+                  { "value": "INJECTION", "text": "INJECTION" },
+                  { "value": "INTRAVENOUS", "text": "INTRAVENOUS" },
+                  { "value": "ORAL", "text": "ORAL" }
+                ],
+                "name": "vitaminKgiven",
+                "title": "Vitamin K given",
+                "required": false
+              },
+              {
+                "name": "vitaminKgivenDoses-panel",
+                "type": "panel",
+                "elements": [
+                  {
+                    "type": "text",
+                    "inputType": "datetime-local",
+                    "max": "2999-12-31",
+                    "name": "vitaminiKDose1",
+                    "title": "1st dose",
+                    "required": false,
+                    "visibleIf": "{vitaminKgiven} notempty"
+                  },
+                  {
+                    "type": "text",
+                    "inputType": "datetime-local",
+                    "max": "2999-12-31",
+                    "name": "vitaminiKDose2",
+                    "title": "2nd dose",
+                    "required": false,
+                    "visibleIf": "{vitaminKgiven} notempty"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

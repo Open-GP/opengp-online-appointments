@@ -1,0 +1,33 @@
+{
+  "description": "DateTime Question",
+  "input": {
+    "resourceType": "Questionnaire",
+    "status": "active",
+    "subjectType": ["Patient"],
+    "item": [
+      {
+        "linkId": "vitaminiKDose1",
+        "text": "1st dose",
+        "type": "dateTime"
+      }
+    ]
+  },
+  "output": {
+    "pages": [
+      {
+        "name": "vitaminiKDose1-page",
+        "title": "1st dose",
+        "elements": [
+          {
+            "type": "text",
+            "title": "1st dose",
+            "name": "vitaminiKDose1",
+            "required": false,
+            "inputType": "datetime-local",
+            "max": "2999-12-31"
+          }
+        ]
+      }
+    ]
+  }
+}

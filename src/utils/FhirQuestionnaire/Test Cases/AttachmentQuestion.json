@@ -1,0 +1,32 @@
+{
+  "description": "Attachment Question",
+  "input": {
+    "resourceType": "Questionnaire",
+    "status": "active",
+    "subjectType": ["Patient"],
+    "item": [
+      {
+        "linkId": "1",
+        "text": "Upload photos:",
+        "type": "attachment"
+      }
+    ]
+  },
+  "output": {
+    "pages": [
+      {
+        "name": "1-page",
+        "title": "Upload photos:",
+        "elements": [
+          {
+            "type": "file",
+            "maxSize": 0,
+            "title": "Upload photos:",
+            "name": "1",
+            "required": false
+          }
+        ]
+      }
+    ]
+  }
+}

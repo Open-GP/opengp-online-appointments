@@ -1,0 +1,64 @@
+{
+  "description": "Boolean Condtional Question",
+  "input": {
+    "resourceType": "Questionnaire",
+    "status": "active",
+    "subjectType": ["Patient"],
+    "item": [
+      {
+        "linkId": "hepBgiven",
+        "text": "Hep B given y / n",
+        "type": "boolean",
+        "item": [
+          {
+            "linkId": "hepBgivenDate",
+            "text": "Date given",
+            "type": "date"
+          }
+        ]
+      }
+    ]
+  },
+  "output": {
+    "pages": [
+      {
+        "name": "hepBgiven-page",
+        "title": "Hep B given y / n",
+        "elements": [
+          {
+            "name": "hepBgiven-panel",
+            "title": "Hep B given y / n",
+            "type": "panel",
+            "elements": [
+              {
+                "type": "radiogroup",
+                "name": "hepBgiven",
+                "required": false,
+                "title": "Hep B given y / n",
+                "choices": [
+                  {
+                    "value": true,
+                    "text": "Yes"
+                  },
+                  {
+                    "value": false,
+                    "text": "No"
+                  }
+                ]
+              },
+              {
+                "inputType": "date",
+                "max": "2999-12-31",
+                "name": "hepBgivenDate",
+                "required": false,
+                "title": "Date given",
+                "type": "text",
+                "visibleIf": "{hepBgiven} = 'true'"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

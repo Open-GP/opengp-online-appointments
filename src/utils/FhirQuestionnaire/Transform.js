@@ -1,18 +1,18 @@
 import FhirQuestionTypes from './Mapping';
 
-const Transform = (fhirQuestionnair) => ParseToPages(fhirQuestionnair);
+const Transform = (fhirQuestionnair) => parseToPages(fhirQuestionnair);
 
-const ParseToPages = (fhirQuestionnair) => {
+const parseToPages = (fhirQuestionnair) => {
   const survey = {
     pages: [],
   };
 
   survey.pages = fhirQuestionnair.item.map((item) => {
-    const page = NewPage(item);
+    const page = newPage(item);
     if (item.type === 'group') {
-      page.elements = ParseItems(item.item);
+      page.elements = parseItems(item.item);
     } else {
-      page.elements = ParseItems([item]);
+      page.elements = parseItems([item]);
     }
     return page;
   });
@@ -20,25 +20,25 @@ const ParseToPages = (fhirQuestionnair) => {
   return survey;
 };
 
-const ParseItems = (items, parent) => items.map((item) => {
+const parseItems = (items, parent) => items.map((item) => {
   if (item.item !== undefined) {
-    const pannel = ChildrenToPannel(item);
+    const pannel = childrenToPannel(item);
     if (item.type !== 'group') {
-      pannel.elements = [ItemToQuestion(item, parent), ...pannel.elements];
+      pannel.elements = [itemToQuestion(item, parent), ...pannel.elements];
     }
     return pannel;
   }
-  return ItemToQuestion(item, parent);
+  return itemToQuestion(item, parent);
 });
 
-const ChildrenToPannel = (item) => ({
+const childrenToPannel = (item) => ({
   name: `${item.linkId}-panel`,
   title: item.text,
   type: 'panel',
-  elements: ParseItems(item.item, item),
+  elements: parseItems(item.item, item),
 });
 
-const NewPage = (item) => {
+const newPage = (item) => {
   const page = {
     name: `${item.linkId}-page`,
     title: item.text,
@@ -47,49 +47,51 @@ const NewPage = (item) => {
   return page;
 };
 
-const ItemToQuestion = (item, parent) => {
+const itemToQuestion = (item, parent) => {
   let question = JSON.parse(JSON.stringify(FhirQuestionTypes[item.type]));
   question.name = item.linkId;
   question.title = item.text;
   question.required = !!item.required;
-  question = AddChoices(item, question);
-  question = AddDisplayLogic(parent, question);
+  question = addChoices(item, question);
+  question = addDisplayLogic(parent, question);
   return question;
 };
 
-const AddChoices = (item, question) => {
+const addChoices = (item, question) => {
   if (item.type === 'choice' || item.type === 'open-choice') {
     item.answerOption.forEach((answer) => {
-      question.choices.push(NewChoice(answer));
+      question.choices.push(newChoice(answer));
     });
   }
   return question;
 };
 
-const AddDisplayLogic = (parent, question) => {
+const addDisplayLogic = (parent, question) => {
   let quest = question;
   if (parent !== undefined) {
     if (parent.type === 'boolean') {
-      quest = AddCondionalBooleanQuestion(parent, quest);
+      quest = addCondionalBooleanQuestion(parent, quest);
     } else if (parent.enableWhen !== undefined) {
-      quest = GetEnableWhenLogic(parent, quest);
+      quest = getEnableWhenLogic(parent, quest);
     }
   }
   return quest;
 };
 
-const AddCondionalBooleanQuestion = (parent, question) => ({
+const addCondionalBooleanQuestion = (parent, question) => ({
   ...question,
   visibleIf: `{${parent.linkId}} = 'true'`,
 });
 
-const GetEnableWhenLogic = (parent, question) => {
+const getEnableWhenLogic = (parent, question) => {
   const logic = parent.enableWhen.map((condition) => {
     if (condition.operator === 'exists') {
       return `{${condition.question}} notempty`;
     }
-    // TODO logic operator answers
-    return `{${condition.question}} ${condition.operator} }`;
+
+    const answer = Object.keys(condition).filter((key) => key.includes('answer'));
+
+    return `{${condition.question}} ${condition.operator} ${condition[answer]}`;
   });
 
   return {
@@ -98,7 +100,7 @@ const GetEnableWhenLogic = (parent, question) => {
   };
 };
 
-const NewChoice = (answer) => {
+const newChoice = (answer) => {
   if ('valueCoding' in answer) {
     return {
       value: answer.valueCoding.code,
@@ -106,6 +108,17 @@ const NewChoice = (answer) => {
     };
   }
   return {};
+};
+
+export const Transformer = {
+  parseToPages,
+  parseItems,
+  newPage,
+  childrenToPannel,
+  addDisplayLogic,
+  addCondionalBooleanQuestion,
+  getEnableWhenLogic,
+  newChoice,
 };
 
 export default Transform;

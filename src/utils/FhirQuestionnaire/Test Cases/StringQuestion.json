@@ -1,0 +1,31 @@
+{
+  "description": "String Question",
+  "input": {
+    "resourceType": "Questionnaire",
+    "status": "active",
+    "subjectType": ["Patient"],
+    "item": [
+      {
+        "linkId": "1",
+        "text": "What is your gender?",
+        "type": "string"
+      }
+    ]
+  },
+  "output": {
+    "pages": [
+      {
+        "name": "1-page",
+        "title": "What is your gender?",
+        "elements": [
+          {
+            "type": "text",
+            "name": "1",
+            "title": "What is your gender?",
+            "required": false
+          }
+        ]
+      }
+    ]
+  }
+}

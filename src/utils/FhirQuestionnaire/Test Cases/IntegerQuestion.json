@@ -1,0 +1,39 @@
+{
+  "description": "Integer Question",
+  "input": {
+    "resourceType": "Questionnaire",
+    "status": "active",
+    "subjectType": ["Patient"],
+    "item": [
+      {
+        "linkId": "Age",
+        "text": "Age in years",
+        "type": "integer"
+      }
+    ]
+  },
+  "output": {
+    "pages": [
+      {
+        "name": "Age-page",
+        "title": "Age in years",
+        "elements": [
+          {
+            "title": "Age in years",
+            "name": "Age",
+            "required": false,
+            "type": "text",
+            "inputType": "number",
+            "validators": [
+              {
+                "type": "regex",
+                "text": "Must be whole number",
+                "regex": "^([0]|[-+]?[1-9][0-9]*)$"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

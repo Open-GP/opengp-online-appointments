@@ -1,0 +1,60 @@
+{
+  "description": "Nested Grouped Questions",
+  "input": {
+    "resourceType": "Questionnaire",
+    "status": "active",
+    "subjectType": ["Patient"],
+    "item": [
+      {
+        "linkId": "1",
+        "text": "General questions",
+        "type": "group",
+        "item": [
+          {
+            "linkId": "neonatalInformation",
+            "text": "Neonatal Information",
+            "type": "group",
+            "item": [
+              {
+                "linkId": "birthWeight",
+                "text": "Birth weight (kg)",
+                "type": "decimal"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "output": {
+    "pages": [
+      {
+        "name": "1-page",
+        "title": "General questions",
+        "elements": [
+          {
+            "type": "panel",
+            "title": "Neonatal Information",
+            "name": "neonatalInformation-panel",
+            "elements": [
+              {
+                "title": "Birth weight (kg)",
+                "name": "birthWeight",
+                "required": false,
+                "type": "text",
+                "inputType": "number",
+                "validators": [
+                  {
+                    "type": "regex",
+                    "text": "Must be a decimal number",
+                    "regex": "-?(0|[1-9][0-9]*)(\\.[0-9]+)?([eE][+-]?[0-9]+)?"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

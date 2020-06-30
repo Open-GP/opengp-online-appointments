@@ -1,0 +1,33 @@
+{
+  "description": "Date Question",
+  "input": {
+    "resourceType": "Questionnaire",
+    "status": "active",
+    "subjectType": ["Patient"],
+    "item": [
+      {
+        "linkId": "1",
+        "text": "What is your date of birth?",
+        "type": "date"
+      }
+    ]
+  },
+  "output": {
+    "pages": [
+      {
+        "name": "1-page",
+        "title": "What is your date of birth?",
+        "elements": [
+          {
+            "type": "text",
+            "title": "What is your date of birth?",
+            "name": "1",
+            "required": false,
+            "inputType": "date",
+            "max": "2999-12-31"
+          }
+        ]
+      }
+    ]
+  }
+}

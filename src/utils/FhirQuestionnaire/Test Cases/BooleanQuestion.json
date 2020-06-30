@@ -1,0 +1,41 @@
+{
+  "description": "Boolean Question",
+  "input": {
+    "resourceType": "Questionnaire",
+    "status": "active",
+    "subjectType": ["Patient"],
+    "item": [
+      {
+        "linkId": "1",
+        "text": "Do you have allergies?",
+        "type": "boolean"
+      }
+    ]
+  },
+  "output": {
+    "pages": [
+      {
+        "name": "1-page",
+        "title": "Do you have allergies?",
+        "elements": [
+          {
+            "type": "radiogroup",
+            "name": "1",
+            "required": false,
+            "title": "Do you have allergies?",
+            "choices": [
+              {
+                "value": true,
+                "text": "Yes"
+              },
+              {
+                "value": false,
+                "text": "No"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

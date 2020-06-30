@@ -1,0 +1,12 @@
+{
+  "description": "Empty Questionnaire",
+  "input": {
+    "resourceType": "Questionnaire",
+    "status": "active",
+    "subjectType": ["Patient"],
+    "item": []
+  },
+  "output": {
+    "pages": []
+  }
+}
