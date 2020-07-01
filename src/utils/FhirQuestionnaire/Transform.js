@@ -9,11 +9,9 @@ const parseToPages = (fhirQuestionnair) => {
 
   survey.pages = fhirQuestionnair.item.map((item) => {
     const page = newPage(item);
-    if (item.type === 'group') {
-      page.elements = parseItems(item.item);
-    } else {
-      page.elements = parseItems([item]);
-    }
+    page.elements = item.type === 'group'
+      ? parseItems(item.item)
+      : parseItems([item]);
     return page;
   });
 
@@ -53,7 +51,7 @@ const itemToQuestion = (item, parent) => {
   question.title = item.text;
   question.required = !!item.required;
   question = addChoices(item, question);
-  question = addDisplayLogic(parent, question);
+  question = transformDisplayLogic(parent, question);
   return question;
 };
 
@@ -66,11 +64,11 @@ const addChoices = (item, question) => {
   return question;
 };
 
-const addDisplayLogic = (parent, question) => {
+const transformDisplayLogic = (parent, question) => {
   let quest = question;
   if (parent !== undefined) {
     if (parent.type === 'boolean') {
-      quest = addCondionalBooleanQuestion(parent, quest);
+      quest = transformCondionalBooleanQuestion(parent, quest);
     } else if (parent.enableWhen !== undefined) {
       quest = transformEnableWhenLogic(parent, quest);
     }
@@ -78,7 +76,7 @@ const addDisplayLogic = (parent, question) => {
   return quest;
 };
 
-const addCondionalBooleanQuestion = (parent, question) => ({
+const transformCondionalBooleanQuestion = (parent, question) => ({
   ...question,
   visibleIf: `{${parent.linkId}} = 'true'`,
 });
@@ -126,8 +124,8 @@ export const Transformer = {
   parseItems,
   newPage,
   childrenToPannel,
-  addDisplayLogic,
-  addCondionalBooleanQuestion,
+  transformDisplayLogic,
+  transformCondionalBooleanQuestion,
   transformEnableWhenLogic,
   newChoice,
 };
