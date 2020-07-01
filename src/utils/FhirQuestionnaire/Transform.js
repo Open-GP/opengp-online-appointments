@@ -72,7 +72,7 @@ const addDisplayLogic = (parent, question) => {
     if (parent.type === 'boolean') {
       quest = addCondionalBooleanQuestion(parent, quest);
     } else if (parent.enableWhen !== undefined) {
-      quest = getEnableWhenLogic(parent, quest);
+      quest = transformEnableWhenLogic(parent, quest);
     }
   }
   return quest;
@@ -83,21 +83,32 @@ const addCondionalBooleanQuestion = (parent, question) => ({
   visibleIf: `{${parent.linkId}} = 'true'`,
 });
 
-const getEnableWhenLogic = (parent, question) => {
-  const logic = parent.enableWhen.map((condition) => {
-    if (condition.operator === 'exists') {
-      return `{${condition.question}} notempty`;
-    }
-
-    const answer = Object.keys(condition).filter((key) => key.includes('answer'));
-
-    return `{${condition.question}} ${condition.operator} ${condition[answer]}`;
-  });
+const transformEnableWhenLogic = (parent, question) => {
+  let logic = transformOperatorLogic(parent);
+  logic = transformBehaviorLogic(parent, logic);
 
   return {
     ...question,
-    visibleIf: logic.join(' and '),
+    visibleIf: logic,
   };
+};
+
+const transformOperatorLogic = (parent) => parent.enableWhen.map((condition) => {
+  if (condition.operator === 'exists') {
+    return `{${condition.question}} notempty`;
+  }
+  const answer = Object.keys(condition).filter((key) => key.includes('answer'));
+  return `{${condition.question}} ${condition.operator} ${condition[answer]}`;
+});
+
+const transformBehaviorLogic = (parent, logic) => {
+  const behavior = { any: 'or', all: 'and' };
+  if (parent.enableBehavior) {
+    return logic.join(` ${behavior[parent.enableBehavior]} `);
+  } if (logic.length === 1) {
+    return logic[0];
+  }
+  throw new Error('Must have enableBehavior');
 };
 
 const newChoice = (answer) => {
@@ -117,7 +128,7 @@ export const Transformer = {
   childrenToPannel,
   addDisplayLogic,
   addCondionalBooleanQuestion,
-  getEnableWhenLogic,
+  transformEnableWhenLogic,
   newChoice,
 };
 
